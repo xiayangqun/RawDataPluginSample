@@ -16,6 +16,6 @@ onPlaybackAudioFrame 函数里去填充数据
 
 ### 编译动态库
 1. README.md文件里写了怎么编译。怎么把生成的动态库拷贝到Unity Rtc SDK对应的目录地方
-2. 如果本地不想编译，可以把代码推送到github上，打个tag，比如4.5.2.6。那么github action也会自动编译产物。
+2. C++的部分这就改完了，很简单
 
 
