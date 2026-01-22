@@ -37,6 +37,8 @@ class PLUGIN_CPP_API AudioFrameObserver
 
   AudioParams getEarMonitoringAudioParams() override;
 
+  void putAudioFrameData(void* buffer, int length);
+
  public:
   bool EnablePlugin() override;
 

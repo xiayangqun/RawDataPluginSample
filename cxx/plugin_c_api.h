@@ -13,3 +13,5 @@ PLUGIN_API PluginPtr CreateSamplePlugin(void *rtcEnginePtr);
 PLUGIN_API void DestroySamplePlugin(PluginPtr plugin);
 
 PLUGIN_API PluginPtr CreateSampleAudioPlugin(void *rtcEnginePtr);
+
+PLUGIN_API void PutAudioFrameData(PluginPtr plugin, void* buffer, int length);

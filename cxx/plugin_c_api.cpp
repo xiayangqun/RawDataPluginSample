@@ -34,6 +34,12 @@ PLUGIN_API PluginPtr CreateSampleAudioPlugin(void *rtcEnginePtr) {
   return (IPlugin *) plugin;
 }
 
+PLUGIN_API void PutAudioFrameData(PluginPtr plugin, void* buffer, int length) {
+  if (plugin) {
+    ((AudioFrameObserver *) plugin)->putAudioFrameData(buffer, length);
+  }
+} 
+
 #if defined(__ANDROID__)
 #include <jni.h>
 

@@ -102,3 +102,8 @@ agora::media::IAudioFrameObserver::AudioParams
 AudioFrameObserver::getEarMonitoringAudioParams() {
   return agora::media::IAudioFrameObserver::AudioParams();
 }
+
+void AudioFrameObserver::putAudioFrameData(void* buffer, int length) {
+  // 在这里将Unity传递下来的音频数据从buffer里复制出来缓存，然后在 onPlaybackAudioFrame 里再塞进去。
+  // 注意这个函数是在Unity的线程里调用的，而 onPlaybackAudioFrame 是在子线程里触发的。要注意线程安全问题。
+}
