@@ -38,7 +38,25 @@ PLUGIN_API void PutAudioFrameData(PluginPtr plugin, void* buffer, int length) {
   if (plugin) {
     ((AudioFrameObserver *) plugin)->putAudioFrameData(buffer, length);
   }
-} 
+}
+
+
+PLUGIN_API void * CreateAudioEventHandler(AudioCEventHandler *c_event_handler) {
+  return  new AudioEventHandler(
+      c_event_handler);
+}
+
+PLUGIN_API void  DestroyAudioEventHandler(void * handler) {
+  if (handler) { delete (AudioEventHandler *) handler; }
+}
+
+PLUGIN_API void PutOnPlaybackAudioFrameCallback(PluginPtr plugin, void * callbackHandler) {
+  if (plugin) {
+    ((AudioFrameObserver *) plugin)->putOnPlaybackAudioFrameCallback((AudioEventHandler *)callbackHandler);
+  }
+}
+
+
 
 #if defined(__ANDROID__)
 #include <jni.h>

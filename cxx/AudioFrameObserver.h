@@ -4,6 +4,21 @@
 #include "../include/IAgoraRtcEngine.h"
 #include "plugin_base.h"
 
+
+class PLUGIN_CPP_API AudioEventHandler{
+public:
+  explicit AudioEventHandler(const AudioCEventHandler *event_handler) {
+    event_handler_.OnEvent = event_handler->OnEvent;
+  }
+
+  void OnEvent(AudioEventParam *param){
+    if (event_handler_.OnEvent) event_handler_.OnEvent(param);
+  }
+
+private:
+  AudioCEventHandler event_handler_ = {nullptr};
+};
+
 class PLUGIN_CPP_API AudioFrameObserver
     : public agora::media::IAudioFrameObserver,
       public IPlugin {
@@ -39,6 +54,8 @@ class PLUGIN_CPP_API AudioFrameObserver
 
   void putAudioFrameData(void* buffer, int length);
 
+  void putOnPlaybackAudioFrameCallback(AudioEventHandler * handler);
+
  public:
   bool EnablePlugin() override;
 
@@ -46,4 +63,6 @@ class PLUGIN_CPP_API AudioFrameObserver
 
  private:
   agora::rtc::IRtcEngine *rtc_engine_ = nullptr;
+  AudioEventHandler * onPlaybackAudioFrameCallback = nullptr;
+
 };

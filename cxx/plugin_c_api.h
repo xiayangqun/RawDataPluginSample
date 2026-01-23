@@ -4,6 +4,7 @@
 
 typedef void *PluginPtr;
 
+
 PLUGIN_API bool EnablePlugin(PluginPtr plugin);
 
 PLUGIN_API bool DisablePlugin(PluginPtr plugin);
@@ -15,3 +16,10 @@ PLUGIN_API void DestroySamplePlugin(PluginPtr plugin);
 PLUGIN_API PluginPtr CreateSampleAudioPlugin(void *rtcEnginePtr);
 
 PLUGIN_API void PutAudioFrameData(PluginPtr plugin, void* buffer, int length);
+
+PLUGIN_API void* CreateAudioEventHandler(AudioCEventHandler *c_event_handler);
+
+PLUGIN_API void  DestroyAudioEventHandler(void* handler);
+
+PLUGIN_API void  PutOnPlaybackAudioFrameCallback(PluginPtr plugin, void * callbackHandler);
+

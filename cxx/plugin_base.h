@@ -63,3 +63,19 @@ class IPlugin {
 
   virtual bool DisablePlugin() = 0;
 };
+
+
+typedef struct AudioEventParam {
+  void *buffer;
+  int length;
+  int samplesChannel;
+  int channels;
+  int samplesPerSec;
+} AudioEventParam;
+
+
+typedef void( *Audo_Func_Event)(AudioEventParam *param);
+
+typedef struct AudioCEventHandler {
+  Audo_Func_Event OnEvent;
+} AudioCEventHandler;

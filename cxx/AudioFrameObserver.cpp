@@ -6,7 +6,7 @@
 #include <vector>
 
 AudioFrameObserver::AudioFrameObserver(agora::rtc::IRtcEngine *rtc_engine)
-    : rtc_engine_(rtc_engine) {}
+    : rtc_engine_(rtc_engine), onPlaybackAudioFrameCallback(nullptr) {}
 
 AudioFrameObserver::~AudioFrameObserver() { rtc_engine_ = nullptr; }
 
@@ -61,6 +61,19 @@ bool AudioFrameObserver::onRecordAudioFrame(const char *channelId,
 
 bool AudioFrameObserver::onPlaybackAudioFrame(const char *channelId,
                                               AudioFrame &audioFrame) {
+
+  //因为在 putOnPlaybackAudioFrameCallback 和 onPlayBackAudioFrameCallback里都会访问
+  //onPlaybackAudioFrameCallback 变量，而这属于2个线程，所以要对 onPlaybackAudioFrameCallback 加锁哦。
+  if (onPlaybackAudioFrameCallback) {
+    AudioEventParam param;
+    param.buffer = audioFrame.buffer;
+    /* 这里自己记得赋值
+    param.length = 1234;
+    param.xxxxxx= xxxxxx
+    */
+    onPlaybackAudioFrameCallback->OnEvent(new AudioEventParam);
+  }
+
   return true;
 }
 
@@ -106,4 +119,11 @@ AudioFrameObserver::getEarMonitoringAudioParams() {
 void AudioFrameObserver::putAudioFrameData(void* buffer, int length) {
   // 在这里将Unity传递下来的音频数据从buffer里复制出来缓存，然后在 onPlaybackAudioFrame 里再塞进去。
   // 注意这个函数是在Unity的线程里调用的，而 onPlaybackAudioFrame 是在子线程里触发的。要注意线程安全问题。
+}
+
+void AudioFrameObserver::putOnPlaybackAudioFrameCallback(AudioEventHandler * handler) {
+
+  //因为在 putOnPlaybackAudioFrameCallback 和 onPlayBackAudioFrameCallback里都会访问
+  //onPlaybackAudioFrameCallback 变量，而这属于2个线程，所以要对 onPlaybackAudioFrameCallback 加锁哦。
+  onPlaybackAudioFrameCallback = handler;
 }
